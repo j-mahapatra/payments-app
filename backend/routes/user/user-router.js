@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../../models/user-model');
+const Account = require('../../models/account-model');
 const jwt = require('jsonwebtoken');
 const { signupSchema, signinSchema, updateUserSchema } = require('../../utils/zod-schema');
 const { MINIMUM_BALANCE } = require('../../utils/constants');
@@ -35,7 +36,7 @@ router.post('/signup', async (req, res) => {
             balance: MINIMUM_BALANCE
         })
 
-        if (createdAccount._id) {
+        if (!createdAccount._id) {
             return res.status(500).json({ message: 'Account could not be created.' });
         }
     
