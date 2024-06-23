@@ -45,6 +45,7 @@ export default function Signin() {
                   }
                 );
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("username", username);
                 navigate("/dashboard");
               }}
             />
