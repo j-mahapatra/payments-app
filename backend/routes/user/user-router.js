@@ -62,4 +62,34 @@ router.post('/signin', async (req, res) => {
     }
 })
 
+router.get('/get-users', async (req, res) => {
+    try {
+        const filter = req?.query?.filter ?? '';
+
+        const users = await User.find({
+            $or: [
+                {
+                    firstName: {
+                        $regex: filter 
+                    }
+                },
+                {
+                    lastName: {
+                        $regex: filter
+                    }
+                }
+            ]
+        })
+        .select('-password -__v');
+
+        if (!users) {
+            return res.status(404).json({ message: 'No users found.' });
+        }
+
+        return res.status(200).json({ users });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error.' });
+    }
+})
+
 module.exports = router;
