@@ -1,5 +1,7 @@
 const express = require('express');
 const { transferSchema } = require('../../utils/zod-schema');
+const Account = require('../../models/account-model');
+const authMiddleware = require('../../middlewares/auth-middleware');
 
 const router = express.Router();
 
@@ -37,6 +39,22 @@ router.post('/transfer', async (req, res) => {
         await session.commitTransaction();
 
         return res.status(201).json({ message: 'Funds transferred successfully.' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error.' });
+    }
+})
+
+router.get('/account-details', authMiddleware, async (req, res) => {
+    try {
+        const userId = req?.userId ?? '';
+
+        const account = await Account.findOne({ userId }).select('-__v');
+
+        if (!account) {
+            return res.status(404).json({ message: 'Account not found.' });
+        }
+
+        return res.status(200).json({ account });
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error.' });
     }
