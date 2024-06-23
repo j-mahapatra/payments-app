@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../../models/user-model');
 const jwt = require('jsonwebtoken');
-const { signupSchema, signinSchema } = require('../../utils/zod-schema');
+const { signupSchema, signinSchema, updateUserSchema } = require('../../utils/zod-schema');
 const { MINIMUM_BALANCE } = require('../../utils/constants');
 
 const router = express.Router();
@@ -100,6 +100,25 @@ router.get('/get-users', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: 'Internal Server Error.' });
     }
+})
+
+router.post('/update', async (req, res) => {
+    try {
+          const body = req.body;
+          const { success } = updateUserSchema.safeParse(body);
+
+          if (!success) {
+            return res.status(400).json({ message: 'Invalid inputs.' });
+          }
+
+          await User.updateOne(body, {
+            id: req.userId
+          }) 
+
+          return res.status(201).json({ message: 'User details updated successfully.' });
+    } catch (error) {
+          return res.status(500).json({ message: 'Internal Server Error.' });
+    }  
 })
 
 module.exports = router;
