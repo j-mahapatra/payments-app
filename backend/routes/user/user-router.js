@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../../models/user-model');
 const jwt = require('jsonwebtoken');
 const { signupSchema, signinSchema } = require('../../utils/zod-schema');
+const { MINIMUM_BALANCE } = require('../../utils/constants');
 
 const router = express.Router();
 
@@ -26,7 +27,16 @@ router.post('/signup', async (req, res) => {
     
         const token = jwt.sign({
             userId: createdUser._id
-       }, process.env.JWT_SECRET);
+        }, process.env.JWT_SECRET);
+
+        const createdAccount = await Account.create({
+            userId: createdUser._id,
+            balance: MINIMUM_BALANCE
+        })
+
+        if (createdAccount._id) {
+            return res.status(500).json({ message: 'Account could not be created.' });
+        }
     
         return res.status(201).json({ message: 'User created successfully.', token });
     } catch (error) {
