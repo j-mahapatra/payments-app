@@ -15,7 +15,7 @@ A simple payment app using React.js, MongoDB, Express.js and TailwindCSS.
 |--------------|------------------------------------|-----------------------------------------------|
 | POST | `/api/v1/user/signup` | User signup |
 | POST | `/api/v1/user/signin` | User signin |
-| POST | `/api/v1/user/get-users?filter=example` | Get a list of filters with firstName, lastName or userName matching the filter |
+| GET | `/api/v1/user/get-users?filter=example` | Get a list of filters with firstName, lastName or userName matching the filter |
 | POST | `/api/v1/user/update` | Update user details |
 | POST | `/api/v1/account/transfer` | Transfer funds |
 | GET | `/api/v1/account/account-details` | Account details |
