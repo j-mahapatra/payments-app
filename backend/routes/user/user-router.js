@@ -89,6 +89,11 @@ router.get('/get-users', authMiddleware, async (req, res) => {
                     lastName: {
                         $regex: filter
                     }
+                },
+                {
+                    userName: {
+                        $regex: filter 
+                    }
                 }
             ]
         })
