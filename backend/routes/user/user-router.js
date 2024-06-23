@@ -3,6 +3,7 @@ const User = require('../../models/user-model');
 const jwt = require('jsonwebtoken');
 const { signupSchema, signinSchema, updateUserSchema } = require('../../utils/zod-schema');
 const { MINIMUM_BALANCE } = require('../../utils/constants');
+const authMiddleware = require('../../middlewares/auth-middleware');
 
 const router = express.Router();
 
@@ -72,7 +73,7 @@ router.post('/signin', async (req, res) => {
     }
 })
 
-router.get('/get-users', async (req, res) => {
+router.get('/get-users', authMiddleware, async (req, res) => {
     try {
         const filter = req?.query?.filter ?? '';
 
@@ -102,7 +103,7 @@ router.get('/get-users', async (req, res) => {
     }
 })
 
-router.post('/update', async (req, res) => {
+router.post('/update', authMiddleware, async (req, res) => {
     try {
           const body = req.body;
           const { success } = updateUserSchema.safeParse(body);
