@@ -22,7 +22,7 @@ export default function User({ user }) {
       <div className="flex flex-col justify-center h-ful">
         <Button
           onClick={() => {
-            navigate(`/send?id=${user._id}&name=${user.firstName}`);
+            navigate(`/send?id=${user._id}&firstName=${user.firstName}&lastName=${user.lastName}`);
           }}
           label={"Send Money"}
         />
