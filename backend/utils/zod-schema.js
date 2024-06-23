@@ -18,4 +18,9 @@ const updateUserSchema = zod.object({
     password: zod.string().optional()
 })
 
-module.exports = { signupSchema, signinSchema, updateUserSchema };
+const transferSchema = zod.object({
+    amount: zod.string(),
+    receiver: zod.string()
+})
+
+module.exports = { signupSchema, signinSchema, updateUserSchema, transferSchema };
